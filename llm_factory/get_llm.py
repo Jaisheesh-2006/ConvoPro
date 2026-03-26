@@ -1,20 +1,20 @@
-from llama_index.llms.ollama import Ollama
+from llama_index.llms.groq import Groq
 
 from config.settings import Settings
 
 settings = Settings()
-OLLAMA_URL = settings.OLLAMA_URL
 
-_current_model_name=None
-_current_llm_instance=None
+_current_model_name = None
+_current_llm_instance = None
 
-def get_ollama_llm(model_name: str) -> Ollama:
+
+def get_groq_llm(model_name: str) -> Groq:
     global _current_model_name, _current_llm_instance
-    if _current_model_name==model_name and _current_llm_instance is not None:
+    if _current_model_name == model_name and _current_llm_instance is not None:
         return _current_llm_instance
-    
-    llm=Ollama(model=model_name, base_url=OLLAMA_URL)
-    _current_model_name=model_name
-    _current_llm_instance=llm
+
+    llm = Groq(model=model_name, api_key=settings.GROQ_API_KEY)
+    _current_model_name = model_name
+    _current_llm_instance = llm
     return llm
 
