@@ -1,122 +1,94 @@
-# ConvoPro — ChatGPT-style Chat UI
+# ConvoPro
 
-ConvoPro is a lightweight ChatGPT-style interface that lets users chat with Groq-hosted models while persisting conversations to MongoDB.
+ConvoPro is a Streamlit-based conversational AI application that provides a ChatGPT-style interface using Groq-hosted LLMs, with persistent conversation history stored in MongoDB.
 
-## Problem Solved
+## Overview
 
-Enables a fast, local-first chat experience with selectable LLMs and conversation history persistence for easy retrieval.
+This project is designed for fast, practical chat workflows where users can:
 
-## Tech Stack
+- select from configured LLM models,
+- exchange multi-turn messages in a clean UI,
+- preserve and retrieve conversation history,
+- keep configuration environment-driven for local or hosted use.
 
-- Python 3.13
+## Core Features
+
+- Chat interface built with Streamlit
+- Groq model integration through LlamaIndex
+- MongoDB-backed conversation persistence
+- Automatic conversation title generation
+- Centralized settings via environment variables
+
+## Technology Stack
+
+- Python 3.10+
 - Streamlit
-- Groq (via LlamaIndex)
 - LlamaIndex
-- MongoDB (PyMongo)
+- Groq API
+- PyMongo
 - Pydantic + pydantic-settings
 - python-dotenv
 
-## How to Run (Local)
+## Project Structure
 
-### 1) Clone and set up a virtual environment
+- `main.py`: Application entrypoint and UI flow
+- `config/`: Environment configuration and settings management
+- `db/`: MongoDB connection and conversation data operations
+- `services/`: Chat helpers, model listing, and title generation
+- `llm_factory/`: LLM initialization and provider wiring
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Jaisheesh-2006/ConvoPro.git
 cd ConvoPro
-python -m venv .venv
 ```
 
-Activate the virtual environment:
+### 2. Create and activate a virtual environment
 
-- Windows PowerShell
+Windows PowerShell:
 
 ```powershell
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-- macOS/Linux
+macOS/Linux:
 
 ```bash
+python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 2) Install dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3) Configure environment variables
+### 4. Configure environment variables
 
-```bash
-copy .env.example .env
-```
+Create a `.env` file based on your template and provide values for:
 
-On macOS/Linux, use:
+- `GROQ_API_KEY`
+- `MONGO_DB_URL`
+- `MONGO_DB_NAME`
+- `GROQ_MODELS`
 
-```bash
-cp .env.example .env
-```
-
-Edit `.env` as needed (MongoDB URL, DB name, Groq API key, and models list).
-
-### 4) Ensure services are running
-
-- **MongoDB** should be running locally (default: `mongodb://localhost:27017/`).
-- **Groq** requires a valid `GROQ_API_KEY` in your `.env` file.
-
-### 5) Run the app
+### 5. Run the application
 
 ```bash
 streamlit run main.py
 ```
 
-## Project Structure (Quick Look)
+## Configuration Notes
 
-- `main.py` — Streamlit UI and chat flow
-- `services/` — model list, titles, and chat utilities
-- `db/` — MongoDB connection and conversation persistence
-- `config/` — environment-driven settings
+- Ensure MongoDB is reachable before launching the app.
+- Ensure `GROQ_MODELS` contains valid model names available to your Groq account.
+- Keep secrets in `.env` and never commit them to source control.
 
-## Pre-Deployment Checklist
+## Intended Use
 
-- Python version is `3.10+`
-- `.env` is configured with valid `GROQ_API_KEY`
-- `GROQ_MODELS` contains at least one valid Groq model
-- MongoDB is reachable from deployment environment
-- Start command works: `streamlit run main.py --server.port $PORT --server.address 0.0.0.0`
-
-## Free Deployment Options
-
-### 1) Streamlit Community Cloud (best for this project)
-
-- Free for public GitHub repos
-- Native Streamlit support
-- Simple setup from repo
-
-Steps:
-
-1. Push this repo to GitHub.
-2. Go to share.streamlit.io and connect your GitHub.
-3. Select repo and set entrypoint to `main.py`.
-4. Add secrets (`GROQ_API_KEY`, `MONGO_DB_URL`, `MONGO_DB_NAME`, `GROQ_MODELS`) in app settings.
-5. Deploy.
-
-### 2) Render (free web service)
-
-- Works with Streamlit
-- Better control over runtime settings
-
-Suggested settings:
-
-- Build command: `pip install -r requirements.txt`
-- Start command: `streamlit run main.py --server.port $PORT --server.address 0.0.0.0`
-
-### 3) Hugging Face Spaces (free)
-
-- Good for demo apps
-- Supports Streamlit SDK directly
-
-Note: For all platforms, use MongoDB Atlas free tier instead of local MongoDB.
-
----
+ConvoPro is suitable for local development, rapid prototyping, and internal conversational workflows where quick setup and persistent chat history are important.
